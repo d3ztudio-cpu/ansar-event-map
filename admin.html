@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#173f35"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache">
   <title>Venue Login · Ansar Campus</title><link rel="icon" href="images/map.png">
-  <link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=1.9.4"><link rel="stylesheet" href="style.css?v=5"><link rel="stylesheet" href="fixes.css?v=5">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css?v=1.9.4"><link rel="stylesheet" href="style.css?v=6"><link rel="stylesheet" href="fixes.css?v=6">
 </head>
 <body class="admin-page">
   <div id="login-view" class="login-shell"><section class="login-card"><span class="brand-mark large">A</span><h1>Venue login</h1><p>Use an authorised Google account or the private access key.</p><button id="login-button" class="primary-button" type="button">Login with Google</button><div class="login-divider"><span>or use access key</span></div><form id="key-login-form" class="key-login-form"><label for="access-key">Access key</label><input id="access-key" type="password" required minlength="6" autocomplete="current-password" placeholder="Enter access key"><button class="secondary-button" type="submit">Login with key</button></form><button id="reset-key-button" class="text-button reset-key" type="button">Forgot access key?</button><p id="login-message" class="form-message" role="alert"></p><a href="index.html">← Return to public map</a></section></div>
@@ -12,13 +12,14 @@
       <div class="admin-header"><div><strong>Venue editor</strong><small id="signed-in-email"></small></div><button id="logout-button" class="text-button" type="button">Sign out</button></div>
       <p class="helper">Click the map to place a new venue, or select an existing marker to edit it.</p>
       <form id="venue-form"><input id="venue-id" type="hidden">
-        <label>Name <input id="venue-name" required maxlength="80" placeholder="e.g. Main Stage"></label><label>Description <textarea id="venue-description" maxlength="240" rows="3" placeholder="Programme or directions"></textarea></label>
-        <div class="form-row"><label>Category <select id="venue-category"><option value="stage">Stage</option><option value="venue">Venue</option><option value="food">Food</option><option value="facility">Facility</option><option value="medical">Medical</option><option value="other">Other</option></select></label><label>Floor <input id="venue-floor" maxlength="40" placeholder="Ground"></label></div>
+        <label>Venue name <span class="optional">(optional)</span><input id="venue-name" maxlength="80" placeholder="e.g. Auditorium"></label><label>Description <textarea id="venue-description" maxlength="240" rows="3" placeholder="Programme or directions"></textarea></label>
+        <div class="form-row"><label>Stage number <input id="venue-stage-number" required maxlength="30" placeholder="e.g. Stage 1"></label><label>Block name <input id="venue-block" required maxlength="60" placeholder="e.g. A Block"></label></div>
+        <div class="form-row"><label>Floor <input id="venue-floor" required maxlength="40" placeholder="e.g. Ground floor"></label><label>Category <select id="venue-category"><option value="stage">Stage</option><option value="venue">Venue</option><option value="food">Food</option><option value="facility">Facility</option><option value="medical">Medical</option><option value="other">Other</option></select></label></div>
         <div class="form-row coordinates"><label>Latitude <input id="venue-lat" required type="number" step="any"></label><label>Longitude <input id="venue-lng" required type="number" step="any"></label></div>
         <label class="check-row"><input id="venue-active" type="checkbox" checked> Visible on public map</label>
         <div class="form-actions"><button class="primary-button" type="submit">Save venue</button><button id="new-button" class="secondary-button" type="button">New</button><button id="delete-button" class="danger-button" type="button" hidden>Delete</button></div><p id="form-message" class="form-message" role="status" aria-live="polite"></p>
       </form><div class="venue-list-heading"><strong>All venues</strong><span id="venue-count"></span></div><div id="venue-list" class="venue-list"></div>
     </aside><main id="admin-map" aria-label="Venue editing map"></main>
   </div>
-  <script src="vendor/leaflet/leaflet.js?v=1.9.4"></script><script src="firebase-config.js?v=5"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script><script src="admin.js?v=5"></script>
+  <script src="vendor/leaflet/leaflet.js?v=1.9.4"></script><script src="firebase-config.js?v=6"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script><script src="admin.js?v=6"></script>
 </body></html>

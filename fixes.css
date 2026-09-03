@@ -26,3 +26,7 @@
 .key-login-form .secondary-button { width: 100%; margin-top: 10px; }
 .reset-key { display: block; margin: 8px auto 0; font-size: 12px; }
 .login-card .form-message { min-height: 20px; margin: 8px 0; }
+.optional { color: var(--muted); font-size: 11px; font-weight: 400; }
+.venue-label { background: rgba(255,255,255,.94); border: 0; border-radius: 6px; box-shadow: 0 2px 8px #0002; color: var(--ink); font-weight: 700; padding: 3px 6px; }
+.venue-label::before { display: none; }
+.venue-marker.inactive span { background: #8d9592 !important; filter: grayscale(1); }
