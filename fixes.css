@@ -30,3 +30,6 @@
 .venue-label { background: rgba(255,255,255,.94); border: 0; border-radius: 6px; box-shadow: 0 2px 8px #0002; color: var(--ink); font-weight: 700; padding: 3px 6px; }
 .venue-label::before { display: none; }
 .venue-marker.inactive span { background: #8d9592 !important; filter: grayscale(1); }
+.clear-all-button { width: 100%; margin-top: 10px; padding: 9px 12px; border: 1px solid #e1b7b7; border-radius: 8px; background: #fff; color: var(--danger); font-weight: 700; }
+.clear-all-button:hover:not(:disabled) { background: #fae8e8; }
+.clear-all-button:disabled { cursor: not-allowed; opacity: .45; }
