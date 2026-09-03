@@ -6,13 +6,15 @@
   if(!config.apiKey||config.apiKey==="REPLACE_ME"){message(loginMessage,"Firebase must be configured before the admin portal can be used. See README.md.",true);document.getElementById("login-button").disabled=true;return}
   firebase.initializeApp(config);var auth=firebase.auth(),db=firebase.firestore(),provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account",hd:"ansarschool.in",login_hint:ADMIN_EMAIL});
   document.getElementById("login-button").onclick=function(){message(loginMessage,"Opening secure sign-in…");auth.signInWithPopup(provider).catch(function(e){message(loginMessage,friendly(e),true)})};
+  document.getElementById("key-login-form").onsubmit=function(e){e.preventDefault();var key=document.getElementById("access-key").value;message(loginMessage,"Checking access key…");auth.signInWithEmailAndPassword(ADMIN_EMAIL,key).catch(function(err){message(loginMessage,err&&err.code==="auth/invalid-credential"?"The access key is incorrect.":friendly(err),true)})};
+  document.getElementById("reset-key-button").onclick=function(){message(loginMessage,"Sending access-key setup email…");auth.sendPasswordResetEmail(ADMIN_EMAIL,{url:location.href.split("?")[0]}).then(function(){message(loginMessage,"A secure setup link was sent to "+ADMIN_EMAIL+".")}).catch(function(err){message(loginMessage,friendly(err),true)})};
   document.getElementById("logout-button").onclick=function(){auth.signOut()};
   function friendly(e){if(e&&e.code==="auth/popup-blocked")return "The sign-in popup was blocked. Allow popups and try again.";if(e&&e.code==="auth/popup-closed-by-user")return "Login was cancelled before an account was selected.";if(e&&e.code==="auth/operation-not-allowed")return "Google login must be enabled in Firebase Authentication.";if(e&&e.code==="auth/unauthorized-domain")return "Login is not authorised for this website yet. Add d3ztudio-cpu.github.io to Firebase Authentication → Settings → Authorized domains.";return (e&&e.message)||"Something went wrong. Please try again."}
   auth.onAuthStateChanged(async function(user){
     if(!user){loginView.hidden=false;adminView.hidden=true;return}
     var loginEmail=(user.email||"").trim().toLowerCase();
     if(loginEmail!==ADMIN_EMAIL||user.emailVerified!==true){await auth.signOut();message(loginMessage,"Access denied. Please select "+ADMIN_EMAIL+". Other accounts cannot open the venue editor.",true);return}
-    loginView.hidden=true;adminView.hidden=false;document.getElementById("signed-in-email").textContent=user.email;startEditor();
+    loginView.hidden=true;adminView.hidden=false;document.getElementById("signed-in-email").textContent=user.email;document.body.classList.add("editor-open");try{startEditor()}catch(err){adminView.hidden=true;loginView.hidden=false;message(loginMessage,"The editor could not start: "+friendly(err),true)}
   });
   var started=false,map,markers=L.layerGroup(),draftMarker,venues=[];
   var fields={id:document.getElementById("venue-id"),name:document.getElementById("venue-name"),description:document.getElementById("venue-description"),category:document.getElementById("venue-category"),floor:document.getElementById("venue-floor"),lat:document.getElementById("venue-lat"),lng:document.getElementById("venue-lng"),active:document.getElementById("venue-active")};

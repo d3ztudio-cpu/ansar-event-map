@@ -1,0 +1,28 @@
+/* Component-level overrides kept separate from the legacy single-line stylesheet. */
+[hidden] { display: none !important; }
+
+.leaflet-control-layers label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 2px 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.leaflet-control-layers input,
+.leaflet-control-layers-selector {
+  position: static;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.login-divider { display: flex; align-items: center; gap: 10px; margin: 20px 0 4px; color: var(--muted); font-size: 12px; }
+.login-divider::before, .login-divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+.key-login-form { text-align: left; }
+.key-login-form label { margin-top: 8px; }
+.key-login-form .secondary-button { width: 100%; margin-top: 10px; }
+.reset-key { display: block; margin: 8px auto 0; font-size: 12px; }
+.login-card .form-message { min-height: 20px; margin: 8px 0; }
