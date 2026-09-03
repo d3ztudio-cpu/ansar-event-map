@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore { match /databases/{database}/documents {
+  function isVenueAdmin() { return request.auth != null && request.auth.token.email_verified == true && request.auth.token.email == 'ansarmedia@ansarschool.in'; }
+  match /venues/{venueId} {
+    allow read: if true;
+    allow create, update: if isVenueAdmin() && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80 && request.resource.data.lat is number && request.resource.data.lng is number && request.resource.data.lat >= -90 && request.resource.data.lat <= 90 && request.resource.data.lng >= -180 && request.resource.data.lng <= 180;
+    allow delete: if isVenueAdmin();
+  }
+  match /{document=**} { allow read, write: if false; }
+}}
