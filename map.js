@@ -12,6 +12,7 @@
   L.control.layers({ Map: normal, Satellite: satellite }, null, { position: "bottomright" }).addTo(map);
   var status = document.getElementById("status");
   var layer = L.layerGroup().addTo(map);
+  var blockLayer = L.layerGroup().addTo(map);
 
   function clean(value) {
     var element = document.createElement("div");
@@ -42,6 +43,15 @@
     setTimeout(function () { status.textContent = ""; }, 2500);
   }
 
+  function renderBlocks(blocks) {
+    blockLayer.clearLayers();
+    blocks.forEach(function (block) {
+      var shortName = clean(block.name).replace(/ Block$/i, "");
+      var icon = L.divIcon({ className: "campus-block-marker", html: shortName, iconSize: null, iconAnchor: [17, 14] });
+      L.marker([block.lat, block.lng], { icon: icon }).bindTooltip(clean(block.name), { direction: "top" }).addTo(blockLayer);
+    });
+  }
+
   function fallback() {
     return fetch("data/venues.json", { cache: "no-store" }).then(function (response) {
       if (!response.ok) throw Error();
@@ -57,6 +67,11 @@
       snapshot.forEach(function (document) { venues.push(Object.assign({ id: document.id }, document.data())); });
       render(venues);
     }, fallback);
+    firebase.firestore().collection("campusBlocks").onSnapshot(function (snapshot) {
+      var blocks = [];
+      snapshot.forEach(function (document) { blocks.push(Object.assign({ id: document.id }, document.data())); });
+      renderBlocks(blocks);
+    });
   } else fallback();
 
   var locationMarker, accuracyCircle;
