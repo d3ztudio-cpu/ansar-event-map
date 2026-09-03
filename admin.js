@@ -4,13 +4,14 @@
   var loginView=document.getElementById("login-view"),adminView=document.getElementById("admin-view"),loginMessage=document.getElementById("login-message"),formMessage=document.getElementById("form-message");
   function message(el,text,error){el.textContent=text||"";el.classList.toggle("error",!!error)}
   if(!config.apiKey||config.apiKey==="REPLACE_ME"){message(loginMessage,"Firebase must be configured before the admin portal can be used. See README.md.",true);document.getElementById("login-button").disabled=true;return}
-  firebase.initializeApp(config);var auth=firebase.auth(),db=firebase.firestore(),provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({login_hint:ADMIN_EMAIL});
+  firebase.initializeApp(config);var auth=firebase.auth(),db=firebase.firestore(),provider=new firebase.auth.GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account",hd:"ansarschool.in",login_hint:ADMIN_EMAIL});
   document.getElementById("login-button").onclick=function(){message(loginMessage,"Opening secure sign-in…");auth.signInWithPopup(provider).catch(function(e){message(loginMessage,friendly(e),true)})};
   document.getElementById("logout-button").onclick=function(){auth.signOut()};
-  function friendly(e){if(e&&e.code==="auth/popup-blocked")return "The sign-in popup was blocked. Allow popups and try again.";if(e&&e.code==="auth/unauthorized-domain")return "This website domain must be added to Firebase Authentication → Authorized domains.";return (e&&e.message)||"Something went wrong. Please try again."}
+  function friendly(e){if(e&&e.code==="auth/popup-blocked")return "The sign-in popup was blocked. Allow popups and try again.";if(e&&e.code==="auth/popup-closed-by-user")return "Login was cancelled before an account was selected.";if(e&&e.code==="auth/operation-not-allowed")return "Google login must be enabled in Firebase Authentication.";if(e&&e.code==="auth/unauthorized-domain")return "Login is not authorised for this website yet. Add d3ztudio-cpu.github.io to Firebase Authentication → Settings → Authorized domains.";return (e&&e.message)||"Something went wrong. Please try again."}
   auth.onAuthStateChanged(async function(user){
     if(!user){loginView.hidden=false;adminView.hidden=true;return}
-    if((user.email||"").toLowerCase()!==ADMIN_EMAIL||!user.emailVerified){await auth.signOut();message(loginMessage,"Access is restricted to "+ADMIN_EMAIL+".",true);return}
+    var loginEmail=(user.email||"").trim().toLowerCase();
+    if(loginEmail!==ADMIN_EMAIL||user.emailVerified!==true){await auth.signOut();message(loginMessage,"Access denied. Please select "+ADMIN_EMAIL+". Other accounts cannot open the venue editor.",true);return}
     loginView.hidden=true;adminView.hidden=false;document.getElementById("signed-in-email").textContent=user.email;startEditor();
   });
   var started=false,map,markers=L.layerGroup(),draftMarker,venues=[];
