@@ -47,7 +47,6 @@
     setTimeout(function () { status.textContent = ""; }, 2500);
   }
   document.getElementById("category-filter").addEventListener("change", function () { selectedCategory = this.value; if (window.currentVenues) render(window.currentVenues); });
-  document.getElementById("print-button").addEventListener("click", function () { window.print(); });
 
   function renderBlocks(blocks) {
     blockLayer.clearLayers();
