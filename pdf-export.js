@@ -12,4 +12,15 @@
     this.setLineWidth(.7);
     return original.apply(this,arguments);
   };
+  var originalSave=proto.save;
+  proto.save=function(filename){
+    if(window.QRious){
+      var qrCanvas=document.createElement("canvas");
+      new QRious({element:qrCanvas,value:"https://d3ztudio-cpu.github.io/ansar-event-map/",size:220,level:"H"});
+      this.setFillColor(255,255,255);this.rect(252,168,35,35,"F");
+      this.addImage(qrCanvas.toDataURL("image/png"),"PNG",255,171,29,29);
+      this.setFontSize(6);this.setTextColor(18,59,53);this.text("Scan for live map",253,207);
+    }
+    return originalSave.call(this,filename);
+  };
 })();
