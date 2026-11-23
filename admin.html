@@ -10,7 +10,7 @@
   <div id="admin-view" class="admin-shell" hidden>
     <aside class="admin-panel">
       <div class="admin-header"><div><strong>Venue editor</strong><small id="signed-in-email"></small></div><div><button id="admin-print-button" class="secondary-button" type="button">Download A4 PDF</button><button id="logout-button" class="text-button" type="button">Sign out</button></div></div>
-      <p class="helper">Click the map to place a new venue, or select an existing marker to edit it.</p>
+      <p class="helper">Click the map to place a new venue, or select an existing marker to edit it.</p><label class="map-title-field">Map title<input id="map-title" maxlength="120" placeholder="e.g. Parents Carnival 2026"></label>
       <form id="venue-form"><input id="venue-id" type="hidden">
         <label>Venue name <span class="optional">(optional)</span><input id="venue-name" maxlength="80" placeholder="e.g. Auditorium"></label><label>Description <textarea id="venue-description" maxlength="240" rows="3" placeholder="Programme or directions"></textarea></label>
         <div class="form-row"><label>Stage number <input id="venue-stage-number" required maxlength="30" placeholder="e.g. Stage 1"></label><label>Block name <input id="venue-block" required maxlength="60" placeholder="e.g. A Block"></label></div>
