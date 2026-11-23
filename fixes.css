@@ -39,6 +39,7 @@
 .block-list button { gap: 8px; }
 .block-list .delete-block { width: auto; padding: 5px 8px; border: 0; border-radius: 6px; background: #fae8e8; color: var(--danger); font-size: 11px; font-weight: 700; }
 .campus-block-marker { display: grid; place-items: center; min-width: 34px; height: 28px; padding: 0 7px; border: 2px solid #fff; border-radius: 7px; background: #5f6965; box-shadow: 0 3px 10px #0004; color: #fff; font-size: 11px; font-weight: 800; white-space: nowrap; }
+.exporting-map .leaflet-control-container{display:none!important}
 
 /* 2026 interface refresh */
 :root{--green:#123b35;--accent:#dca84d;--ink:#13211e;--muted:#71807a;--cream:#f4f7f4;--line:#dce6e1;--shadow:0 18px 45px rgba(10,34,29,.18)}
