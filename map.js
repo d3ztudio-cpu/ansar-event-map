@@ -22,7 +22,9 @@
   }
 
   var categoryIcons = { stage: "★", venue: "●", food: "♨", facility: "♜", medical: "✚", other: "◆" };
-  var selectedCategory = "all";
+  var selectedCategory = "all", selectedEvent = "all";
+  var eventFilter = document.createElement("select"); eventFilter.id = "event-filter"; eventFilter.setAttribute("aria-label", "Choose event map"); eventFilter.innerHTML = '<option value="all">All events</option>'; document.querySelector(".map-tools").appendChild(eventFilter);
+  eventFilter.addEventListener("change", function () { selectedEvent = this.value; if (window.currentVenues) render(window.currentVenues); });
   function venueIcon(venue) {
     var category = venue.category || "other";
     return L.divIcon({
@@ -33,7 +35,7 @@
 
   function render(venues) {
     layer.clearLayers();
-    venues.filter(function (venue) { return selectedCategory === "all" || (venue.category || "other") === selectedCategory; }).forEach(function (venue) {
+    venues.filter(function (venue) { return (selectedEvent === "all" || (venue.eventTitle || "General campus map") === selectedEvent) && (selectedCategory === "all" || (venue.category || "other") === selectedCategory); }).forEach(function (venue) {
       var title = venue.name || venue.stageNumber || "Venue";
       var details = [venue.stageNumber, venue.block, venue.floor].filter(Boolean).map(clean).join(" · ");
       var marker = L.marker([venue.lat, venue.lng], { icon: venueIcon(venue) })
@@ -42,7 +44,8 @@
         .addTo(layer);
       if (venue.active !== false) marker.bindTooltip(clean(title), { className: "venue-label", direction: "top", offset: [0, -14] });
     });
-    var activeCount = venues.filter(function (venue) { return venue.active !== false; }).length;
+    var eventNames = {}; venues.forEach(function (venue) { eventNames[venue.eventTitle || "General campus map"] = true; }); eventFilter.innerHTML = '<option value="all">All events</option>'; Object.keys(eventNames).sort().forEach(function (name) { var option = document.createElement("option"); option.value = name; option.textContent = name; eventFilter.appendChild(option); }); eventFilter.value = selectedEvent;
+    var activeCount = venues.filter(function (venue) { return venue.active !== false && (selectedEvent === "all" || (venue.eventTitle || "General campus map") === selectedEvent); }).length;
     status.textContent = venues.length ? activeCount + " active venue" + (activeCount === 1 ? "" : "s") : "No venues published";
     setTimeout(function () { status.textContent = ""; }, 2500);
   }
